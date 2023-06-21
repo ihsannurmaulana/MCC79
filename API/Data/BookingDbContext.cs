@@ -55,8 +55,8 @@ public class BookingDbContext : DbContext
 
         // Booking - Room (Many to One)
         modelBuilder.Entity<Booking>()
-                    .HasOne(booking => booking.Room)
-                    .WithMany(room => room.Bookings)
+                    .HasOne(room => room.Room)
+                    .WithMany(booking => booking.Bookings)
                     .HasForeignKey(room => room.RoomGuid);
 
         // Employee - Account (One to One)
@@ -73,8 +73,8 @@ public class BookingDbContext : DbContext
 
         // AccountRoles - Roles (Many to One)
         modelBuilder.Entity<AccountRole>()
-                    .HasOne(accountRole => accountRole.Role)
-                    .WithMany(role => role.AccountRoles)
+                    .HasOne(role => role.Role)
+                    .WithMany(AccountRole => AccountRole.AccountRoles)
                     .HasForeignKey(role => role.RoleGuid);
     }
 
