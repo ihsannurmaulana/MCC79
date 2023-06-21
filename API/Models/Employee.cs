@@ -1,33 +1,41 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using API.Utilities.Enums;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Models;
 
-public class Employee
+public class Employee : BaseEntity
 {
-    [Key]
-    [Column("guid")]
-    public Guid Guid { get; set; }
+
     [Column("nik", TypeName = "nchar(6)")]
     public string Nik { get; set; }
+
     [Column("first_name", TypeName = "nvarchar(100)")]
     public string FirstName { get; set; }
+
     [Column("last_name")]
     public string? LastName { get; set; }
+
     [Column("birth_date")]
     public DateTime BirthDate { get; set; }
+
     [Column("gender")]
-    public int Gender { get; set; }
+    public GenderEnum Gender { get; set; }
+
     [Column("hiring_date")]
     public DateTime HiringDate { get; set; }
+
     [Column("email", TypeName = "nvarchar(100)")]
     public string Email { get; set; }
+
     [Column("phone_number", TypeName = "nvarchar(20)")]
     public string PhoneNumber { get; set; }
-    [Column("created_date")]
-    public DateTime CreatedDate { get; set; }
-    [Column("modified_date")]
-    public DateTime ModifiedDate { get; set; }
+
+    // Cardinality
+    public Education Education { get; set; }
+
+    public ICollection<Booking> Bookings { get; set; }
+
+    public Account Account { get; set; }
 
 }
 
