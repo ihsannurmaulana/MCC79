@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Models;
 
+
+[Table("tb_m_employees")]
 public class Employee : BaseEntity
 {
 
@@ -31,11 +33,11 @@ public class Employee : BaseEntity
     public string PhoneNumber { get; set; }
 
     // Cardinality
-    public Education Education { get; set; }
+    public Education? Education { get; set; }
 
-    public ICollection<Booking> Bookings { get; set; }
+    public ICollection<Booking>? Bookings { get; set; }
 
-    public Account Account { get; set; }
+    public Account? Account { get; set; }
 
 }
 

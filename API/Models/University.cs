@@ -20,6 +20,6 @@ public class University : BaseEntity
     public DateTime ModifiedDate { get; set; }
 
     // Cardinality
-    public ICollection<Education> Educations { get; set; }
+    public ICollection<Education>? Educations { get; set; }
 }
 
