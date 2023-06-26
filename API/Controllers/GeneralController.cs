@@ -59,7 +59,7 @@ public class GeneralController<TEntity> : ControllerBase
     public IActionResult Delete(Guid guid)
     {
         var isDeleted = _repository.Delete(guid);
-        if (isDeleted)
+        if (!isDeleted)
         {
             return NotFound();
         }
