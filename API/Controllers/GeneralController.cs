@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
-public class GeneralController<TEntity> : ControllerBase
+public class GeneralController<TIEntityRepository, TEntity> : ControllerBase
+    where TIEntityRepository : IGeneralRepository<TEntity>
     where TEntity : class
 {
-    protected readonly IGeneralRepository<TEntity> _repository;
+    protected readonly TIEntityRepository _repository;
 
-    public GeneralController(IGeneralRepository<TEntity> repository)
+    public GeneralController(TIEntityRepository repository)
     {
         _repository = repository;
     }

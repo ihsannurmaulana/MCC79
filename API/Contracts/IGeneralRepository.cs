@@ -11,5 +11,6 @@ public interface IGeneralRepository<TEntity>
     bool Update(TEntity entity);
 
     bool Delete(Guid guid);
+
 }
 

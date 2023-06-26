@@ -7,7 +7,7 @@ namespace API.Controllers;
 [ApiController]
 [Route("api/accounts")]
 
-public class AccountController : GeneralController<Account>
+public class AccountController : GeneralController<IAccountRepository, Account>
 {
     public AccountController(IAccountRepository repository) : base(repository)
     {
