@@ -2,11 +2,11 @@
 using API.Data;
 using API.Models;
 
-namespace API.Repositories;
-
-public class RoomRepository : GeneralRepository<Room>, IRoomRepository
+namespace API.Repositories
 {
-    public RoomRepository(BookingDbContext context) : base(context) { }
+    public class RoomRepository : GeneralRepository<Room>, IRoomRepository
+    {
+        public RoomRepository(BookingDbContext context) : base(context) { }
 
+    }
 }
-

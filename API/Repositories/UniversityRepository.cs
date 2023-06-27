@@ -10,7 +10,8 @@ public class UniversityRepository : GeneralRepository<University>, IUniversityRe
 
     public IEnumerable<University> GetByName(string name)
     {
-        return _context.Set<University>().Where(u => u.Name.Contains(name));
+        return _context.Set<University>().Where(u => u.Name == name);
+
     }
 
 }

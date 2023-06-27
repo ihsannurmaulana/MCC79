@@ -2,8 +2,8 @@
 using API.Data;
 
 namespace API.Repositories;
-public class GeneralRepository<TEnitity> : IGeneralRepository<TEnitity>
-    where TEnitity : class
+public class GeneralRepository<TEntity> : IGeneralRepository<TEntity>
+    where TEntity : class
 {
     protected readonly BookingDbContext _context;
 
@@ -12,23 +12,25 @@ public class GeneralRepository<TEnitity> : IGeneralRepository<TEnitity>
         _context = context;
     }
 
-    public ICollection<TEnitity> GetAll()
+    public ICollection<TEntity> GetAll()
     {
-        return _context.Set<TEnitity>().ToList();
+        return _context.Set<TEntity>().ToList();
     }
 
-    public TEnitity? GetByGuid(Guid guid)
+    public TEntity? GetByGuid(Guid guid)
     {
-        return _context.Set<TEnitity>().Find(guid);
+        var entity = _context.Set<TEntity>().Find(guid);
+        _context.ChangeTracker.Clear();
+        return entity;
     }
 
-    public TEnitity? Create(TEnitity enitity)
+    public TEntity? Create(TEntity entity)
     {
         try
         {
-            _context.Set<TEnitity>().Add(enitity);
+            _context.Set<TEntity>().Add(entity);
             _context.SaveChanges();
-            return enitity;
+            return entity;
         }
         catch
         {
@@ -36,11 +38,11 @@ public class GeneralRepository<TEnitity> : IGeneralRepository<TEnitity>
         }
     }
 
-    public bool Update(TEnitity enitity)
+    public bool Update(TEntity entity)
     {
         try
         {
-            _context.Set<TEnitity>().Update(enitity);
+            _context.Set<TEntity>().Update(entity);
             _context.SaveChanges();
             return true;
         }
@@ -50,17 +52,11 @@ public class GeneralRepository<TEnitity> : IGeneralRepository<TEnitity>
         }
     }
 
-    public bool Delete(Guid guid)
+    public bool Delete(TEntity entity)
     {
         try
         {
-            var entity = GetByGuid(guid);
-            if (entity is null)
-            {
-                return false;
-            }
-
-            _context.Set<TEnitity>().Remove(entity);
+            _context.Set<TEntity>().Remove(entity);
             _context.SaveChanges();
             return true;
 
@@ -69,6 +65,11 @@ public class GeneralRepository<TEnitity> : IGeneralRepository<TEnitity>
         {
             return false;
         }
+    }
+
+    public bool IsExist(Guid guid)
+    {
+        return GetByGuid(guid) is not null;
     }
 }
 

@@ -10,7 +10,8 @@ public interface IGeneralRepository<TEntity>
 
     bool Update(TEntity entity);
 
-    bool Delete(Guid guid);
+    bool Delete(TEntity entity);
 
+    bool IsExist(Guid guid);
 }
 
