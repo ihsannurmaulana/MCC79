@@ -37,6 +37,8 @@ namespace API.DTOs.Accounts
         [PasswordPolicy]
         public string Password { get; set; }
         [Required]
+        /*[NotMapped]
+        [Compare(nameof(Password), ErrorMessage = "Passsword not match")]*/
         public string ConfirmPassword { get; set; }
 
     }

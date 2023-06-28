@@ -8,6 +8,9 @@ public class Account : BaseEntity
     [Column("password", TypeName = "nvarchar(255)")]
     public string Password { get; set; }
 
+    /*[NotMapped]
+    public string ConfirmPassword { get; set; }*/
+
     [Column("is_deleted")]
     public bool IsDeleted { get; set; }
 

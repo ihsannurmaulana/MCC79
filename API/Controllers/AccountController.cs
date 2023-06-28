@@ -17,8 +17,8 @@ namespace API.Controllers
             _service = service;
         }
 
-        [Route("register")]
-        [HttpPost]
+        //[Route("register")]
+        [HttpPost("register")]
         public IActionResult Register(RegisterDto register)
         {
             var createdRegister = _service.Register(register);
@@ -38,6 +38,46 @@ namespace API.Controllers
                 Status = HttpStatusCode.OK.ToString(),
                 Message = "Successfully register",
                 Data = createdRegister
+            });
+        }
+
+        [HttpPost("login")]
+        public IActionResult Login(LoginDto login)
+        {
+            LoginDto loginSuccess = new LoginDto();
+            try
+            {
+                loginSuccess = _service.Login(login);
+
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.ToLower().Contains("not found"))
+                {
+                    return NotFound(new ResponseHandler<LoginDto>
+                    {
+                        Code = StatusCodes.Status404NotFound,
+                        Status = HttpStatusCode.BadRequest.ToString(),
+                        Message = ex.Message
+                    });
+                }
+                else
+                {
+                    return BadRequest(new ResponseHandler<LoginDto>
+                    {
+                        Code = StatusCodes.Status400BadRequest,
+                        Status = HttpStatusCode.BadRequest.ToString(),
+                        Message = ex.Message
+                    });
+                }
+            }
+
+            return Ok(new ResponseHandler<LoginDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Successfully login",
+                Data = loginSuccess
             });
         }
 

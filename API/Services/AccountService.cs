@@ -25,6 +25,12 @@ namespace API.Services
 
         public RegisterDto? Register(RegisterDto registerDto)
         {
+
+            if (registerDto.Password != registerDto.ConfirmPassword)
+            {
+                return null;
+            }
+
             EmployeeService employeeService = new EmployeeService(_employeeRepository);
             Employee employee = new Employee
             {
@@ -79,12 +85,9 @@ namespace API.Services
             {
                 Guid = employee.Guid,
                 Password = Hashing.HashPassword(registerDto.Password),
+                //ConfirmPassword = registerDto.ConfirmPassword
             };
 
-            if (registerDto.Password != registerDto.ConfirmPassword)
-            {
-                return null;
-            }
 
             var createdAccount = _accountRepository.Create(account);
             if (createdAccount is null)
@@ -108,6 +111,30 @@ namespace API.Services
                 Gpa = createdEducation.Gpa,
                 UniversityCode = createdUniversity.Code,
                 UniversityName = createdUniversity.Name
+            };
+
+            return toDto;
+        }
+
+        public LoginDto Login(LoginDto loginDto)
+        {
+            var employee = _employeeRepository.GetByEmail(loginDto.Email);
+            if (employee == null)
+            {
+                throw new Exception("Account not found");
+            }
+
+            var account = _accountRepository.GetByGuid(employee.Guid);
+            var isPasswordValid = Hashing.ValidatePassword(loginDto.Password, account.Password);
+            if (!isPasswordValid)
+            {
+                throw new Exception("Password is invalid");
+            }
+
+            var toDto = new LoginDto
+            {
+                Email = loginDto.Email,
+                Password = loginDto.Password,
             };
 
             return toDto;
