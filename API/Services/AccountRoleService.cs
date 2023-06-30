@@ -21,13 +21,12 @@ namespace API.Services
                 return null; // No Account Role found
             }
 
-            var toDto = accountRoles.Select(accountRole =>
-                                                new AccountRoleDto
-                                                {
-                                                    Guid = accountRole.Guid,
-                                                    AccountGuid = accountRole.AccountGuid,
-                                                    RoleGuid = accountRole.RoleGuid,
-                                                }).ToList();
+            var toDto = accountRoles.Select(accountRole => new AccountRoleDto
+            {
+                Guid = accountRole.Guid,
+                AccountGuid = accountRole.AccountGuid,
+                RoleGuid = accountRole.RoleGuid,
+            }).ToList();
 
             return toDto; // Account Role found
         }

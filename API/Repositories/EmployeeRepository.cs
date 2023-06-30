@@ -10,7 +10,7 @@ namespace API.Repositories
 
         public EmployeeRepository(BookingDbContext context) : base(context) { }
 
-        public Employee? GetByEmail(string email)
+        public Employee? GetEmployeeByEmail(string email)
         {
             /*return _context.Set<Employee>().Where(e => e.Email.Single(email));*/
             return _context.Employees.SingleOrDefault(e => e.Email == email);

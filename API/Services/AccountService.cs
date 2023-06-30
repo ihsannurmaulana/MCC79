@@ -13,18 +13,24 @@ namespace API.Services
         private readonly IUniversityRepository _universityRepository;
         private readonly IEducationRepository _educationRepository;
         private readonly ITokenHandler _tokenHandler;
+        private readonly IRoleRepository _roleRepository;
+        private readonly IAccountRoleRepository _accountRoleRepository;
 
         public AccountService(IAccountRepository accountRepository,
             IEmployeeRepository employeeRepository,
             IUniversityRepository universityRepository,
             IEducationRepository educationRepository,
-            ITokenHandler tokenHandler)
+            ITokenHandler tokenHandler,
+            IRoleRepository roleRepository,
+            IAccountRoleRepository accountRoleRepository)
         {
             _accountRepository = accountRepository;
             _employeeRepository = employeeRepository;
             _universityRepository = universityRepository;
             _educationRepository = educationRepository;
             _tokenHandler = tokenHandler;
+            _roleRepository = roleRepository;
+            _accountRoleRepository = accountRoleRepository;
         }
 
         public RegisterDto? Register(RegisterDto registerDto)
@@ -85,6 +91,8 @@ namespace API.Services
                 return null;
             }
 
+
+
             Account account = new Account
             {
                 Guid = employee.Guid,
@@ -98,7 +106,6 @@ namespace API.Services
             {
                 return null;
             }
-
 
             var toDto = new RegisterDto
             {
@@ -120,9 +127,10 @@ namespace API.Services
             return toDto;
         }
 
+        // Login Service
         public string Login(LoginDto loginDto)
         {
-            var emailEmployee = _employeeRepository.GetByEmail(loginDto.Email);
+            var emailEmployee = _employeeRepository.GetEmployeeByEmail(loginDto.Email);
             if (emailEmployee == null)
             {
                 return "0";
@@ -160,6 +168,45 @@ namespace API.Services
             };
 
             return toDto;*/
+        }
+
+        // Forget Password Service
+        public int ForgetPassword(ForgetPasswordDto forgetPasswordDto)
+        {
+            var employee = _employeeRepository.GetEmployeeByEmail(forgetPasswordDto.Email);
+            if (employee == null)
+            {
+                return -1;
+            }
+
+            Random rand = new Random();
+            HashSet<int> uniqueDigits = new HashSet<int>();
+
+            while (uniqueDigits.Count < 6)
+            {
+                int digit = rand.Next(0, 9);
+                uniqueDigits.Add(digit);
+            }
+
+            int generateOtp = uniqueDigits.Aggregate(0, (acc, digit) => acc * 10 + digit);
+
+            var relatedAccount = GetAccount(employee.Guid);
+
+            var updateAccountDto = new AccountDto
+            {
+                Guid = relatedAccount.Guid,
+                Password = relatedAccount.Password,
+                IsDeleted = relatedAccount.IsDeleted,
+                Otp = generateOtp,
+                IsUsed = false,
+                ExpiredTime = DateTime.Now.AddMinutes(5)
+            };
+            var updateResult = UpdateAccount(updateAccountDto);
+            if (updateResult == 0)
+            {
+                return 0;
+            }
+            return 1;
         }
 
         public IEnumerable<AccountDto>? GetAccount()

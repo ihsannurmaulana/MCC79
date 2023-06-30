@@ -4,6 +4,6 @@ namespace API.Contracts
 {
     public interface IEmployeeRepository : IGeneralRepository<Employee>
     {
-        Employee? GetByEmail(string email);
+        Employee? GetEmployeeByEmail(string email);
     }
 }
