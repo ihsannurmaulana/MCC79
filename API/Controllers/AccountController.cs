@@ -51,7 +51,7 @@ public class AccountController : ControllerBase
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
-                Message = "Email not found"
+                Message = "Account not found"
             });
         }
         if (login is "0")
@@ -60,7 +60,7 @@ public class AccountController : ControllerBase
             {
                 Code = StatusCodes.Status400BadRequest,
                 Status = HttpStatusCode.BadRequest.ToString(),
-                Message = "Data not created"
+                Message = "Password is incorrect"
             });
         }
         if (login is "-2")
@@ -69,7 +69,7 @@ public class AccountController : ControllerBase
             {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
-                Message = "Otp does not match"
+                Message = "Error retrieving when creating token"
             });
         }
 
@@ -77,7 +77,7 @@ public class AccountController : ControllerBase
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
-            Message = "Successfully login",
+            Message = "Login Success",
             Data = login
         });
     }
@@ -103,7 +103,7 @@ public class AccountController : ControllerBase
             {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
-                Message = "Otp does not match"
+                Message = "Error retrieving data from the database"
             });
         }
 
@@ -111,7 +111,7 @@ public class AccountController : ControllerBase
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
-            Message = "Successfully updated"
+            Message = "Otp has been sent to your email"
         });
     }
 
