@@ -21,8 +21,9 @@ namespace API.Utilities.Handler
 
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
-            var tokenOptions = new JwtSecurityToken(issuer: _configuration["JWTService:Issuer"], audience: _configuration["JWTService:Audience"], claims: claims, expires: DateTime.Now.AddMinutes(10), signingCredentials: signinCredentials);
-
+            var tokenOptions = new JwtSecurityToken(issuer: _configuration["JWTService:Issuer"], audience: _configuration["JWTService:Audience"], claims: claims,
+                expires: DateTime.Now.AddMinutes(10),
+                signingCredentials: signinCredentials);
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
             return tokenString;
         }
