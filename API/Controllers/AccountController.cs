@@ -115,6 +115,59 @@ public class AccountController : ControllerBase
         });
     }
 
+    // Change Password
+    [HttpPost("change-password")]
+    public IActionResult ChangePassword(ChangePasswordDto changePasswordDto)
+    {
+        var updatePassword = _service.ChangePassword(changePasswordDto);
+        if (updatePassword is -1)
+        {
+            return NotFound(new ResponseHandler<ChangePasswordDto>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Email not found"
+            });
+        }
+
+        if (updatePassword is 0)
+        {
+            return BadRequest(new ResponseHandler<AccountDto>
+            {
+                Code = StatusCodes.Status400BadRequest,
+                Status = HttpStatusCode.BadRequest.ToString(),
+                Message = "Otp is incorect"
+            });
+        }
+
+        if (updatePassword is 1)
+        {
+            return BadRequest(new ResponseHandler<AccountDto>
+            {
+                Code = StatusCodes.Status400BadRequest,
+                Status = HttpStatusCode.BadRequest.ToString(),
+                Message = "Otp is already used"
+            });
+        }
+
+        if (updatePassword is 2)
+        {
+            return BadRequest(new ResponseHandler<AccountDto>
+            {
+                Code = StatusCodes.Status400BadRequest,
+                Status = HttpStatusCode.BadRequest.ToString(),
+                Message = "Otp is expired"
+            });
+        }
+
+        return Ok(new ResponseHandler<ChangePasswordDto>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Password has been changed successfully"
+        });
+    }
+
     [HttpGet]
     public IActionResult GetAll()
     {
@@ -163,7 +216,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create(AccountDto newAccountDto)
+    public IActionResult Create(NewAccountDto newAccountDto)
     {
         var createAccount = _service.CreateAccount(newAccountDto);
         if (createAccount is null)

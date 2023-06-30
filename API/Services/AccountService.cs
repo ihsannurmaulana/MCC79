@@ -209,6 +209,42 @@ namespace API.Services
             return 1;
         }
 
+        // Change Password
+        public int ChangePassword(ChangePasswordDto changePasswordDto)
+        {
+            var isExist = _employeeRepository.GetEmployeeByEmail(changePasswordDto.Email);
+            if (isExist is null)
+                return -1;
+
+            var getAccount = _accountRepository.GetByGuid(isExist.Guid);
+            if (getAccount.Otp != changePasswordDto.Otp)
+                return 0;
+
+            if (getAccount.IsUsed == true)
+                return 1;
+
+            if (getAccount.ExpiredTime < DateTime.Now)
+                return 2;
+
+            var account = new Account
+            {
+                Guid = getAccount.Guid,
+                IsUsed = getAccount.IsUsed,
+                IsDeleted = getAccount.IsDeleted,
+                ModifiedDate = DateTime.Now,
+                CreatedDate = getAccount!.CreatedDate,
+                Otp = changePasswordDto.Otp,
+                ExpiredTime = getAccount.ExpiredTime,
+                Password = Hashing.HashPassword(changePasswordDto.NewPassword)
+            };
+            var isUpdated = _accountRepository.Update(account);
+            if (!isUpdated)
+            {
+                return 0;
+            }
+            return 3;
+        }
+
         public IEnumerable<AccountDto>? GetAccount()
         {
             var accounts = _accountRepository.GetAll();
@@ -216,6 +252,10 @@ namespace API.Services
             {
                 return null; // No Account  found
             }
+            /*foreach (var account in accounts)
+            {
+                Console.WriteLine(account.ExpiredTime);
+            }*/
 
             var toDto = accounts.Select(account => new AccountDto
 
@@ -252,7 +292,7 @@ namespace API.Services
             return toDto; // accounts found
         }
 
-        public AccountDto? CreateAccount(AccountDto newAccountDto)
+        public AccountDto? CreateAccount(NewAccountDto newAccountDto)
         {
             var account = new Account
             {
@@ -261,6 +301,7 @@ namespace API.Services
                 Otp = newAccountDto.Otp,
                 IsDeleted = newAccountDto.IsDeleted,
                 IsUsed = newAccountDto.IsUsed,
+                ExpiredTime = DateTime.Now,
                 CreatedDate = DateTime.Now,
                 ModifiedDate = DateTime.Now
             };
@@ -278,6 +319,7 @@ namespace API.Services
                 Otp = createdAccount.Otp,
                 IsDeleted = createdAccount.IsDeleted,
                 IsUsed = createdAccount.IsUsed,
+                ExpiredTime = createdAccount.ExpiredTime,
             };
 
             return toDto; // Account created
@@ -300,6 +342,7 @@ namespace API.Services
                 Otp = updateAccountDto.Otp,
                 IsUsed = updateAccountDto.IsUsed,
                 IsDeleted = updateAccountDto.IsDeleted,
+                ExpiredTime = updateAccountDto.ExpiredTime,
                 ModifiedDate = DateTime.Now,
                 CreatedDate = getAccount!.CreatedDate
             };
