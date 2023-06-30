@@ -2,6 +2,7 @@
 using API.DTOs.Accounts;
 using API.Models;
 using API.Utilities;
+using System.Security.Claims;
 
 namespace API.Services
 {
@@ -11,16 +12,19 @@ namespace API.Services
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IUniversityRepository _universityRepository;
         private readonly IEducationRepository _educationRepository;
+        private readonly ITokenHandler _tokenHandler;
 
         public AccountService(IAccountRepository accountRepository,
             IEmployeeRepository employeeRepository,
             IUniversityRepository universityRepository,
-            IEducationRepository educationRepository)
+            IEducationRepository educationRepository,
+            ITokenHandler tokenHandler)
         {
             _accountRepository = accountRepository;
             _employeeRepository = employeeRepository;
             _universityRepository = universityRepository;
             _educationRepository = educationRepository;
+            _tokenHandler = tokenHandler;
         }
 
         public RegisterDto? Register(RegisterDto registerDto)
@@ -116,28 +120,46 @@ namespace API.Services
             return toDto;
         }
 
-        public LoginDto Login(LoginDto loginDto)
+        public string Login(LoginDto loginDto)
         {
-            var employee = _employeeRepository.GetByEmail(loginDto.Email);
-            if (employee == null)
+            var emailEmployee = _employeeRepository.GetByEmail(loginDto.Email);
+            if (emailEmployee == null)
             {
-                throw new Exception("Account not found");
+                return "0";
             }
 
-            var account = _accountRepository.GetByGuid(employee.Guid);
-            var isPasswordValid = Hashing.ValidatePassword(loginDto.Password, account.Password);
+            var password = _accountRepository.GetByGuid(emailEmployee.Guid);
+            var isPasswordValid = Hashing.ValidatePassword(loginDto.Password, password!.Password);
             if (!isPasswordValid)
             {
-                throw new Exception("Password is invalid");
+                return "-1";
             }
 
-            var toDto = new LoginDto
+            var claims = new List<Claim>()
+            {
+                new Claim("NIK", emailEmployee.Nik),
+                new Claim("FullName", $"{emailEmployee.FirstName} {emailEmployee.LastName}"),
+                new Claim("Email", loginDto.Email)
+            };
+
+            try
+            {
+                var getToken = _tokenHandler.GenerateToken(claims);
+                return getToken;
+            }
+            catch (Exception)
+            {
+
+                return "-2";
+            }
+
+            /*var toDto = new LoginDto
             {
                 Email = loginDto.Email,
                 Password = loginDto.Password,
             };
 
-            return toDto;
+            return toDto;*/
         }
 
         public IEnumerable<AccountDto>? GetAccount()

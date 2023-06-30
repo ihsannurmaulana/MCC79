@@ -42,42 +42,43 @@ namespace API.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login(LoginDto login)
+        public IActionResult Login(LoginDto loginDto)
         {
-            LoginDto loginSuccess = new LoginDto();
-            try
+            var login = _service.Login(loginDto);
+            if (login is "-1")
             {
-                loginSuccess = _service.Login(login);
-
+                return NotFound(new ResponseHandler<LoginDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Email not found"
+                });
             }
-            catch (Exception ex)
+            if (login is "0")
             {
-                if (ex.Message.ToLower().Contains("not found"))
+                return BadRequest(new ResponseHandler<LoginDto>
                 {
-                    return NotFound(new ResponseHandler<LoginDto>
-                    {
-                        Code = StatusCodes.Status404NotFound,
-                        Status = HttpStatusCode.BadRequest.ToString(),
-                        Message = ex.Message
-                    });
-                }
-                else
+                    Code = StatusCodes.Status400BadRequest,
+                    Status = HttpStatusCode.BadRequest.ToString(),
+                    Message = "Data not created"
+                });
+            }
+            if (login is "-2")
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<LoginDto>
                 {
-                    return BadRequest(new ResponseHandler<LoginDto>
-                    {
-                        Code = StatusCodes.Status400BadRequest,
-                        Status = HttpStatusCode.BadRequest.ToString(),
-                        Message = ex.Message
-                    });
-                }
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.InternalServerError.ToString(),
+                    Message = "Otp does not match"
+                });
             }
 
-            return Ok(new ResponseHandler<LoginDto>
+            return Ok(new ResponseHandler<string>
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
                 Message = "Successfully login",
-                Data = loginSuccess
+                Data = login
             });
         }
 
