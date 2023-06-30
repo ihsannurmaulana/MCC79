@@ -11,9 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-// Add TokenHandler
-builder.Services.AddScoped<ITokenHandler, TokenHandler>();
-
 // Add DbContext
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<BookingDbContext>(options => options.UseSqlServer(connectionString));
@@ -40,6 +37,16 @@ builder.Services.AddScoped<BookingService>();
 builder.Services.AddScoped<EducationService>();
 builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<RoomService>();
+
+// Register Handler
+builder.Services.AddScoped<ITokenHandler, TokenHandler>();
+
+// Add SmtpClient
+builder.Services.AddTransient<IEmailHandler, EmailHandler>(_ => new EmailHandler(
+    builder.Configuration["EmailService:SmtpServer"],
+    int.Parse(builder.Configuration["EmailService:SmtpPort"]),
+    builder.Configuration["EmailService:FromEmailAddress"]
+ ));
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

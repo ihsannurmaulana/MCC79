@@ -15,6 +15,7 @@ namespace API.Services
         private readonly ITokenHandler _tokenHandler;
         private readonly IRoleRepository _roleRepository;
         private readonly IAccountRoleRepository _accountRoleRepository;
+        private readonly IEmailHandler _emailHandler;
 
         public AccountService(IAccountRepository accountRepository,
             IEmployeeRepository employeeRepository,
@@ -22,7 +23,8 @@ namespace API.Services
             IEducationRepository educationRepository,
             ITokenHandler tokenHandler,
             IRoleRepository roleRepository,
-            IAccountRoleRepository accountRoleRepository)
+            IAccountRoleRepository accountRoleRepository,
+            IEmailHandler emailHandler)
         {
             _accountRepository = accountRepository;
             _employeeRepository = employeeRepository;
@@ -31,6 +33,7 @@ namespace API.Services
             _tokenHandler = tokenHandler;
             _roleRepository = roleRepository;
             _accountRoleRepository = accountRoleRepository;
+            _emailHandler = emailHandler;
         }
 
         public RegisterDto? Register(RegisterDto registerDto)
@@ -171,9 +174,9 @@ namespace API.Services
         }
 
         // Forget Password Service
-        public int ForgetPassword(ForgetPasswordDto forgetPasswordDto)
+        public int ForgetPassword(ForgetPasswordDto forgetPassword)
         {
-            var employee = _employeeRepository.GetEmployeeByEmail(forgetPasswordDto.Email);
+            var employee = _employeeRepository.GetEmployeeByEmail(forgetPassword.Email);
             if (employee == null)
             {
                 return -1;
@@ -206,6 +209,11 @@ namespace API.Services
             {
                 return 0;
             }
+
+            _emailHandler.SendEmail(forgetPassword.Email,
+                "Forgot Password",
+                $"Your OTP is {updateAccountDto.Otp}");
+
             return 1;
         }
 
