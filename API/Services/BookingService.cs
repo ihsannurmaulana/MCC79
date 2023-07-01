@@ -67,7 +67,7 @@ namespace API.Services
         }
 
         // 
-        public IEnumerable<DetailBookingDto> DetailBooking()
+        public IEnumerable<BookingTodayDto> BookingToday()
         {
             var bookings = _bookingRepository.GetAll();
 
@@ -83,7 +83,7 @@ namespace API.Services
                                   join employee in employees on booking.EmployeeGuid equals employee.Guid
                                   join room in rooms on booking.RoomGuid equals room.Guid
                                   where booking.StartDate <= DateTime.Now.Date && booking.EndDate >= DateTime.Now
-                                  select new DetailBookingDto
+                                  select new BookingTodayDto
                                   {
                                       BookingGuid = booking.Guid,
                                       RoomName = room.Name,

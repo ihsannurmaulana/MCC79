@@ -21,11 +21,11 @@ namespace API.Controllers
         [HttpGet("detail-booking")]
         public IActionResult GetDetail()
         {
-            var entities = _service.DetailBooking();
+            var entities = _service.BookingToday();
 
             if (entities == null)
             {
-                return NotFound(new ResponseHandler<DetailBookingDto>
+                return NotFound(new ResponseHandler<BookingTodayDto>
                 {
                     Code = StatusCodes.Status404NotFound,
                     Status = HttpStatusCode.NotFound.ToString(),
@@ -33,7 +33,7 @@ namespace API.Controllers
                 });
             }
 
-            return Ok(new ResponseHandler<IEnumerable<DetailBookingDto>>
+            return Ok(new ResponseHandler<IEnumerable<BookingTodayDto>>
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
