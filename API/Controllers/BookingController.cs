@@ -91,6 +91,29 @@ namespace API.Controllers
             });
         }
 
+        [HttpGet("bookinglength")]
+        public IActionResult CalculateBookingLength()
+        {
+            var entities = _service.BookingDuration();
+            if (entities == null || !entities.Any())
+            {
+                return NotFound(new ResponseHandler<BookingLengthDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data not found"
+                });
+            }
+
+            return Ok(new ResponseHandler<IEnumerable<BookingLengthDto>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Data found",
+                Data = entities
+            });
+        }
+
         // GetAll 
         [HttpGet]
         public IActionResult GetAll()
