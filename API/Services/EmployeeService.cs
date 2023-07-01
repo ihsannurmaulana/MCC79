@@ -7,11 +7,19 @@ namespace API.Services
     public class EmployeeService
     {
         private readonly IEmployeeRepository _employeeRepository;
-        public EmployeeService(IEmployeeRepository employeeRepository)
+        private readonly IEducationRepository _educationRepository;
+        private readonly IUniversityRepository _universityRepository;
+        public EmployeeService(
+            IEmployeeRepository employeeRepository,
+            IEducationRepository educationRepository,
+            IUniversityRepository universityRepository)
         {
             _employeeRepository = employeeRepository;
+            _educationRepository = educationRepository;
+            _universityRepository = universityRepository;
         }
 
+        // Get All Employee
         public IEnumerable<GetEmployeeDto>? GetEmployee()
         {
             var employees = _employeeRepository.GetAll();
@@ -37,6 +45,8 @@ namespace API.Services
             return toDto; // employee found
         }
 
+
+        // GetByGuid Employee
         public GetEmployeeDto? GetEmployee(Guid guid)
         {
             var employee = _employeeRepository.GetByGuid(guid);
@@ -61,6 +71,45 @@ namespace API.Services
             return toDto; // employees found
         }
 
+        // GetAll Data Master Employee
+        public IEnumerable<EmployeeEducationDto>? GetAllMaster()
+        {
+            var master = (from e in _employeeRepository.GetAll()
+                          join education in _educationRepository.GetAll() on e.Guid equals education.Guid
+                          join u in _universityRepository.GetAll() on education.UniversityGuid equals u.Guid
+                          select new EmployeeEducationDto
+                          {
+                              Guid = e.Guid,
+                              FullName = e.FirstName + " " + e.LastName,
+                              Nik = e.Nik,
+                              BirthDate = e.BirthDate,
+                              Email = e.Email,
+                              Gender = e.Gender,
+                              HiringDate = e.HiringDate,
+                              PhoneNumber = e.PhoneNumber,
+                              Major = education.Major,
+                              Degree = education.Degree,
+                              Gpa = education.Gpa,
+                              UniversityName = u.Name
+                          }).ToList();
+            if (!master.Any())
+            {
+                return null;
+            }
+
+            return master;
+        }
+
+        // GetByGuid data master
+        public EmployeeEducationDto? GetMasterByGuid(Guid guid)
+        {
+            var master = GetAllMaster();
+            var masterByGuid = master.FirstOrDefault(master => master.Guid == guid);
+
+            return masterByGuid;
+        }
+
+        // Create Employee
         public GetEmployeeDto? CreateEmployee(NewEmployeeDto newEmployeeDto)
         {
             var employee = new Employee

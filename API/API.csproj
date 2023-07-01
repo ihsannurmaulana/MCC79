@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\Employees\" />
     <Folder Include="DTOs\Bookings\" />
   </ItemGroup>
 

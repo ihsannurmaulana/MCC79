@@ -44,7 +44,7 @@ namespace API.Services
                 return null;
             }
 
-            EmployeeService employeeService = new EmployeeService(_employeeRepository);
+            EmployeeService employeeService = new EmployeeService(_employeeRepository, _educationRepository, _universityRepository);
             Employee employee = new Employee
             {
                 Guid = new Guid(),
