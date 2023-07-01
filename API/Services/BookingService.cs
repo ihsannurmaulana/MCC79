@@ -66,7 +66,7 @@ namespace API.Services
             return toDto; // bookings found
         }
 
-        // 
+        // Get Booking Today
         public IEnumerable<BookingTodayDto> BookingToday()
         {
             var bookings = _bookingRepository.GetAll();
@@ -99,6 +99,49 @@ namespace API.Services
             return detailBookings;
         }
 
+        // Get DetailBooking
+        public IEnumerable<BookingDetailDto>? BookingsDetail()
+        {
+            var bookings = _bookingRepository.GetAll();
+
+            if (bookings == null)
+            {
+                return null;
+            }
+
+            var employees = _employeeRepository.GetAll();
+            var rooms = _roomRepository.GetAll();
+
+            var detailBookings = (from booking in bookings
+                                  join employee in employees on booking.EmployeeGuid equals employee.Guid
+                                  join room in rooms on booking.RoomGuid equals room.Guid
+                                  select new BookingDetailDto
+                                  {
+                                      Guid = booking.Guid,
+                                      BookedNik = employee.Nik,
+                                      BookedBy = employee.FirstName + "" + employee.LastName,
+                                      StartDate = DateTime.Now,
+                                      EndDate = booking.EndDate,
+                                      RoomName = room.Name,
+                                      Status = booking.Status,
+                                  }).ToList();
+            if (!detailBookings.Any())
+            {
+                return null;
+            }
+
+            return detailBookings;
+        }
+
+        // GetBookingByGuid Booking
+        public BookingDetailDto? BookingDetail(Guid guid)
+        {
+            var booking = BookingsDetail();
+
+            var bookingByGuid = booking!.FirstOrDefault(booking => booking.Guid == guid);
+
+            return bookingByGuid;
+        }
         // Create Booking
         public GetBookingDto? CreateBooking(NewBookingDto newBookingDto)
         {

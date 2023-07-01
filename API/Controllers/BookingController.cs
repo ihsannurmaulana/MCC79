@@ -18,8 +18,8 @@ namespace API.Controllers
         }
 
         // GetAll Detail booking
-        [HttpGet("detail-booking")]
-        public IActionResult GetDetail()
+        [HttpGet("detail-booking-today")]
+        public IActionResult BookingDetailToday()
         {
             var entities = _service.BookingToday();
 
@@ -42,6 +42,56 @@ namespace API.Controllers
             });
         }
 
+        [HttpGet("detail-booking")]
+        public IActionResult BookingsDetail()
+        {
+            var bookings = _service.BookingsDetail();
+
+            if (bookings == null)
+            {
+                return NotFound(new ResponseHandler<BookingDetailDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data not found"
+                });
+            }
+
+            return Ok(new ResponseHandler<IEnumerable<BookingDetailDto>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Data found",
+                Data = bookings
+            });
+        }
+
+        // GetByGuid Booking
+        [HttpGet("detail-booking/{guid}")]
+        public IActionResult BookingDetailByGuid(Guid guid)
+        {
+            var booking = _service.BookingDetail(guid);
+
+            if (booking == null)
+            {
+                return NotFound(new ResponseHandler<BookingDetailDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data not found"
+                });
+            }
+
+            return Ok(new ResponseHandler<BookingDetailDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Data found",
+                Data = booking
+            });
+        }
+
+        // GetAll 
         [HttpGet]
         public IActionResult GetAll()
         {
