@@ -36,6 +36,7 @@ namespace API.Services
             _emailHandler = emailHandler;
         }
 
+        // Register
         public RegisterDto? Register(RegisterDto registerDto)
         {
 
