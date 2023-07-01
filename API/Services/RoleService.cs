@@ -20,12 +20,12 @@ namespace API.Services
                 return null; // No role  found
             }
 
-            var toDto = roles.Select(role =>
-                                                new RoleDto
-                                                {
-                                                    Guid = role.Guid,
-                                                    Name = role.Name,
-                                                }).ToList();
+            var toDto = roles.Select(role => new RoleDto
+
+            {
+                Guid = role.Guid,
+                Name = role.Name,
+            }).ToList();
 
             return toDto; // role found
         }
