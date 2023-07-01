@@ -7,12 +7,19 @@ namespace API.Services
     public class BookingService
     {
         private readonly IBookingRepository _bookingRepository;
+        private readonly IEmployeeRepository _employeeRepository;
+        private readonly IRoomRepository _roomRepository;
 
-        public BookingService(IBookingRepository bookingRepository)
+        public BookingService(IBookingRepository bookingRepository,
+            IEmployeeRepository employeeRepository,
+            IRoomRepository roomRepository)
         {
             _bookingRepository = bookingRepository;
+            _employeeRepository = employeeRepository;
+            _roomRepository = roomRepository;
         }
 
+        // GetAll Booking
         public IEnumerable<GetBookingDto>? GetBooking()
         {
             var bookings = _bookingRepository.GetAll();
@@ -36,6 +43,7 @@ namespace API.Services
             return toDto; // Booking found
         }
 
+        // GetByGuid Booking
         public GetBookingDto? GetBooking(Guid guid)
         {
             var booking = _bookingRepository.GetByGuid(guid);
@@ -58,6 +66,40 @@ namespace API.Services
             return toDto; // bookings found
         }
 
+        // 
+        public IEnumerable<DetailBookingDto> DetailBooking()
+        {
+            var bookings = _bookingRepository.GetAll();
+
+            if (bookings == null)
+            {
+                return null;
+            }
+
+            var employees = _employeeRepository.GetAll();
+            var rooms = _roomRepository.GetAll();
+
+            var detailBookings = (from booking in bookings
+                                  join employee in employees on booking.EmployeeGuid equals employee.Guid
+                                  join room in rooms on booking.RoomGuid equals room.Guid
+                                  where booking.StartDate <= DateTime.Now.Date && booking.EndDate >= DateTime.Now
+                                  select new DetailBookingDto
+                                  {
+                                      BookingGuid = booking.Guid,
+                                      RoomName = room.Name,
+                                      Status = booking.Status,
+                                      Floor = room.Floor,
+                                      BookedBy = employee.FirstName + " " + employee.LastName,
+                                  }).ToList();
+            if (!detailBookings.Any())
+            {
+                return null;
+            }
+
+            return detailBookings;
+        }
+
+        // Create Booking
         public GetBookingDto? CreateBooking(NewBookingDto newBookingDto)
         {
             var booking = new Booking
