@@ -16,7 +16,7 @@ public class EmailHandler : IEmailHandler
         _fromEmailAddress = fromEmailAddress;
     }
 
-    public void sendEmail(string toEmail, string subject, string htmlMessage)
+    public void SendEmail(string toEmail, string subject, string htmlMessage)
     {
         var message = new MailMessage
         {
