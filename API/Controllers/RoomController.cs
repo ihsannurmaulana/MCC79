@@ -64,6 +64,27 @@ namespace API.Controllers
             });
         }
 
+        [HttpGet("unused")]
+        public IActionResult GetUnusedRoom()
+        {
+            var unusedRooms = _service.GetUnusedRoom();
+            if (unusedRooms.Count() == 0)
+            {
+                return NotFound(new ResponseHandler<UnusedRoomDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "all rooms are being used"
+                });
+            }
+            return Ok(new ResponseHandler<IEnumerable<UnusedRoomDto>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Data found",
+                Data = unusedRooms
+            });
+        }
         [HttpPost]
         public IActionResult Create(NewRoomDto newRoomDto)
         {
