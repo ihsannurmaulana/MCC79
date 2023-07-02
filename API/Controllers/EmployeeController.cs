@@ -1,6 +1,7 @@
 ﻿using API.DTOs.Employees;
 using API.Services;
 using API.Utilities.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -8,6 +9,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/employees")]
+[Authorize(Roles = $"{nameof(RoleLevel.Admin)}")]
 public class EmployeeController : ControllerBase
 {
     private readonly EmployeeService _service;
@@ -19,6 +21,7 @@ public class EmployeeController : ControllerBase
 
     // GetAll data master Employee
     [HttpGet("get-all-master-employee")]
+    [Authorize(Roles = $"{nameof(RoleLevel.Manager)}")]
     public IActionResult GetAllMaster()
     {
         var entities = _service.GetAllMaster();
@@ -44,6 +47,7 @@ public class EmployeeController : ControllerBase
 
     // GetByGuid Master Employee
     [HttpGet("get-master/{guid}")]
+    [Authorize(Roles = $"{nameof(RoleLevel.Manager)}")]
     public IActionResult GetMasterByGuid(Guid guid)
     {
         var employee = _service.GetMasterByGuid(guid);

@@ -1,6 +1,7 @@
 ﻿using API.DTOs.Bookings;
 using API.Services;
 using API.Utilities.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -8,6 +9,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/bookings")]
+    [Authorize(Roles = $"{nameof(RoleLevel.Admin)}")]
     public class BookingController : ControllerBase
     {
         private readonly BookingService _service;
@@ -43,6 +45,7 @@ namespace API.Controllers
         }
 
         [HttpGet("detail-booking")]
+        [AllowAnonymous]
         public IActionResult BookingsDetail()
         {
             var bookings = _service.BookingsDetail();
@@ -116,6 +119,7 @@ namespace API.Controllers
 
         // GetAll 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult GetAll()
         {
             var entities = _service.GetBooking();

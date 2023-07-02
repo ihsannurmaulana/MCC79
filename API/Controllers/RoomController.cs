@@ -1,6 +1,7 @@
 ﻿using API.DTOs.Rooms;
 using API.Services;
 using API.Utilities.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -8,6 +9,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/rooms")]
+    [Authorize(Roles = $"{nameof(RoleLevel.Admin)}")]
     public class RoomController : ControllerBase
     {
         private readonly RoomService _service;
@@ -18,6 +20,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult GetAll()
         {
             var entities = _service.GetRoom();
