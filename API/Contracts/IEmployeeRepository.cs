@@ -7,6 +7,8 @@ namespace API.Contracts
         Employee? GetEmployeeByEmail(string email);
 
         string? GetLastEmployeeNik();
+
+        Employee? GetByEmailAndPhoneNumber(string nama);
     }
 
 
