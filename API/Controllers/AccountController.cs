@@ -1,6 +1,7 @@
 ﻿using API.DTOs.Accounts;
 using API.Services;
 using API.Utilities.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -8,6 +9,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/accounts")]
+[Authorize(Roles = $"{nameof(RoleLevel.Admin)}")]
 public class AccountController : ControllerBase
 {
     private readonly AccountService _service;
@@ -19,6 +21,7 @@ public class AccountController : ControllerBase
 
     //[Route("register")]
     [HttpPost("register")]
+    [AllowAnonymous]
     public IActionResult Register(RegisterDto register)
     {
         var createdRegister = _service.Register(register);
@@ -42,6 +45,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("login")]
+    [AllowAnonymous]
     public IActionResult Login(LoginDto loginDto)
     {
         var login = _service.Login(loginDto);
@@ -84,6 +88,7 @@ public class AccountController : ControllerBase
 
     // Forget Password
     [HttpPost("forget-password")]
+    [AllowAnonymous]
     public IActionResult ForgetPassword(ForgetPasswordDto forgetPasswordDto)
     {
         var forgetPassword = _service.ForgetPassword(forgetPasswordDto);
@@ -117,6 +122,7 @@ public class AccountController : ControllerBase
 
     // Change Password
     [HttpPost("change-password")]
+    [Authorize(Roles = $"{nameof(RoleLevel.User)}")]
     public IActionResult ChangePassword(ChangePasswordDto changePasswordDto)
     {
         var updatePassword = _service.ChangePassword(changePasswordDto);
@@ -168,6 +174,7 @@ public class AccountController : ControllerBase
         });
     }
 
+    // Get All
     [HttpGet]
     public IActionResult GetAll()
     {
@@ -192,6 +199,7 @@ public class AccountController : ControllerBase
         });
     }
 
+    // Get By Guid
     [HttpGet("{guid}")]
     public IActionResult GetByGuid(Guid guid)
     {
@@ -215,6 +223,7 @@ public class AccountController : ControllerBase
         });
     }
 
+    // Create Account
     [HttpPost]
     public IActionResult Create(NewAccountDto newAccountDto)
     {
@@ -238,6 +247,7 @@ public class AccountController : ControllerBase
         });
     }
 
+    // Update Account
     [HttpPut]
     public IActionResult Update(AccountDto updateAccountDto)
     {
@@ -268,6 +278,7 @@ public class AccountController : ControllerBase
         });
     }
 
+    // Delete Account
     [HttpDelete]
     public IActionResult Delete(Guid guid)
     {
