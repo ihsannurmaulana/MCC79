@@ -1,6 +1,7 @@
 ﻿using API.Contracts;
 using API.DTOs.Employees;
 using API.Models;
+using API.Utilities.Handler;
 
 namespace API.Services
 {
@@ -115,7 +116,6 @@ namespace API.Services
             var employee = new Employee
             {
                 Guid = new Guid(),
-                Nik = GenerateNik(),
                 FirstName = newEmployeeDto.FirstName,
                 LastName = newEmployeeDto.LastName,
                 Gender = newEmployeeDto.Gender,
@@ -126,6 +126,8 @@ namespace API.Services
                 CreatedDate = DateTime.Now,
                 ModifiedDate = DateTime.Now
             };
+            employee.Nik = GenerateNik.Nik(_employeeRepository.GetLastEmployeeNik());
+            _employeeRepository.Create(employee);
 
             var createdEmployee = _employeeRepository.Create(employee);
             if (createdEmployee is null)
@@ -199,19 +201,6 @@ namespace API.Services
             }
 
             return 1;
-        }
-
-        public string GenerateNik()
-        {
-            var getlastNik = _employeeRepository.GetAll().Select(employee => employee.Nik).LastOrDefault();
-
-            if (getlastNik is null)
-            {
-                return "11111"; // No employee found, return default NIK
-            }
-
-            var lastNik = Convert.ToInt32(getlastNik) + 1;
-            return lastNik.ToString();
         }
     }
 }

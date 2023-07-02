@@ -12,6 +12,11 @@ namespace API.Repositories
         {
             return _context.Set<AccountRole>().Where(a => a.AccountGuid == employeeGuid).ToList();
         }
+
+        public IEnumerable<AccountRole> GetAccountRolesByAccountGuid(Guid guid)
+        {
+            return _context.Set<AccountRole>().Where(ar => ar.AccountGuid == guid);
+        }
     }
 }
 

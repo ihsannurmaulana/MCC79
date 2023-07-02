@@ -16,5 +16,10 @@ namespace API.Repositories
             return _context.Employees.SingleOrDefault(e => e.Email == email);
         }
 
+        public string? GetLastEmployeeNik()
+        {
+            return _context.Set<Employee>().ToList().Select(e => e.Nik).LastOrDefault();
+        }
+
     }
 }

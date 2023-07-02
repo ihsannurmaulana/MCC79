@@ -7,8 +7,8 @@ namespace API.DTOs.AccountRoles
         [Required]
         public Guid Guid { get; set; }
         [Required]
-        public Guid AccountGuid { get; set; }
+        public Guid? AccountGuid { get; set; }
         [Required]
-        public Guid RoleGuid { get; set; }
+        public Guid? RoleGuid { get; set; }
     }
 }

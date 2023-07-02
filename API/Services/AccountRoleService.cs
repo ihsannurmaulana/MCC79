@@ -26,6 +26,7 @@ namespace API.Services
                 Guid = accountRole.Guid,
                 AccountGuid = accountRole.AccountGuid,
                 RoleGuid = accountRole.RoleGuid,
+
             }).ToList();
 
             return toDto; // Account Role found
