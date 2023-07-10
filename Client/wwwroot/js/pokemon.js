@@ -1,4 +1,4 @@
-﻿$.ajax({
+﻿/*$.ajax({
     url: "https://pokeapi.co/api/v2/pokemon/"
 }).done((result) => {
     console.log(result.results);
@@ -11,7 +11,9 @@
                 </tr>`;
     })
     $("#tbodyPokemon").html(temp);
-})
+})*/
+
+
 
 function detail(stringURL) {
     $.ajax({
@@ -26,7 +28,7 @@ function detail(stringURL) {
         $("#pokemonHeight").text(res.height);
         $("#pokemonWeight").text(res.weight);
         $("#pokemonBaseExperience").text(res.base_experience);
-        $("#pokemonAbilities").html(res.abilities.map(ability => `<span class="badge mr-2 text-center" style="background-color:${getAbilitiesColor(ability.ability.name)}; width: 80px; height: 20px; border-radius: 10px;">${ability.ability.name}</span>`).join(""));
+        $("#pokemonAbilities").html(res.abilities.map(ability => `<span class="badge mr-2 text-center" style="background-color:${getAbilitiesColor(ability.ability.name)}; width: 100px; height: 20px; border-radius: 10px;">${ability.ability.name}</span>`).join(""));
         $("#pokemonStats").html(res.stats.map(stat => `
         <div>${stat.stat.name}</div>
         <div class="progress mb-2">
@@ -65,6 +67,8 @@ function getTypeColor(value) {
         return "#9ACD32";
     } else if (value == "normal") {
         return "#A9A9A9";
+    } else if (value == "electric") {
+        return "#FFD700"; 
     } else {
         return "white";
     }
@@ -109,6 +113,33 @@ function getAbilitiesColor(value) {
         return "#0000FF"; // Warna default jika tidak ada yang cocok
     }
 }
+
+$(document).ready(function () {
+    $('#myTable').DataTable({
+        ajax: {
+            url: "https://pokeapi.co/api/v2/pokemon/?limit=50",
+            dataType: "JSON",
+            dataSrc: "results" //data source -> butuh array of object
+        },
+        columns: [
+            {
+                data: 'url',
+                render: function (data, type, row) {
+                    let number = data.split('/')[6]
+                    // Mengembalikan nomor urut berdasarkan indeks
+                    return number;
+                }
+            },
+            { data: "name" },
+            {
+                data: null,
+                render: function (data, type, row) {
+                    return `<button onclick="detail('${data.url}')" data-bs-toggle="modal" data-bs-target="#modalPokemon" class="btn btn-primary">Detail</button>`;
+                }
+            },
+        ]
+    });
+});
 
 
 

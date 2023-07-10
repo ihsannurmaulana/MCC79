@@ -17,7 +17,9 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
+    <link href="~/css/site.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css" />
     <link href="~/Theme/css/sb-admin-2.min.css" rel="stylesheet">
     @*<link href="~/css/site.css" rel="stylesheet" />*@
 
@@ -235,9 +237,11 @@
     <script src="~/Theme/js/demo/chart-pie-demo.js"></script>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/pokemon.js" asp-append-version="true"></script>
-
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

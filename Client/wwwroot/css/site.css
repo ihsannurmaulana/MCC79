@@ -47,3 +47,6 @@ nav{
     margin-right: 10px;
 }
 
+.dataTables_filter, dataTables_length {
+    padding-bottom: 10px;
+}
