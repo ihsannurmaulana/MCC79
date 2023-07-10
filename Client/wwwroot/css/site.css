@@ -50,3 +50,59 @@ nav{
 .dataTables_filter, dataTables_length {
     padding-bottom: 10px;
 }
+
+.dt-buttons button .dt-button {
+    background-color: red;
+}
+
+#content > div > h2 {
+    font-weight: bold;
+}
+
+#myTableEmployee_filter label input {
+    width: 150px;
+}
+
+#myTableEmployee_wrapper .dt-buttons button.dt-button.buttons-collection.buttons-colvis {
+    color: black;
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    color: black;
+    font-weight: bold;
+}
+
+#myTableEmployee_wrapper div.dt-buttons button.dt-button.buttons-excel {
+    background-color: #3CB371;
+    color: black;
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    color: black;
+    font-weight: bold;
+}
+
+#myTableEmployee_wrapper div.dt-buttons button.dt-button.buttons-pdf {
+    background-color: #FF0000;
+    color: black;
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    color: black;
+    font-weight: bold;
+}
+
+#myTableEmployee_wrapper div.dt-buttons button.dt-button.buttons-copy {
+    color: black;
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    color: black;
+    font-weight: bold;
+}
+
+#myTableEmployee_wrapper div.dt-buttons button.dt-button.buttons-print {
+    background-color: #A9A9A9;
+    color: black;
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    color: black;
+    font-weight: bold;
+}
+
