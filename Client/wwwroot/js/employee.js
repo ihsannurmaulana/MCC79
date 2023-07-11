@@ -92,7 +92,11 @@
             {
                 data: null,
                 render: function (data, type, row) {
-                    return `<button onclick="detail('${data.url}')" data-bs-toggle="modal" data-bs-target="#" class="btn btn-primary">Detail</button>`;
+                    return `
+                    <div class="">
+                        <button onclick="#" data-bs-toggle="modal" data-bs-target="#modalUpdate" class="btn btn-primary text-center"><i class="fas fa-fw fa-edit"></i></button>
+                        <button onclick="Delete('${row.guid}')" data-bs-toggle="modal" data-bs-target="#" class="btn btn-danger text-center"><i class="fas fa-fw fa-trash"></i></button>
+                    </div>`;
                 }
             },
         ]
@@ -117,13 +121,54 @@ function Insert() {
         //dataType: "json"
     }).done(result => {
         // Tambahkan kode untuk menampilkan pemberitahuan jika berhasil
-        alert("Data inserted successfully!");
-        location.reload(); // Mereset form
-    }).fail( error => {
+        Swal.fire(
+            'Good job!',
+            'Data has been successfuly inserted!',
+            'success'
+        ).then(() => {
+            location.reload(); // Mereset form
+        });
+
+    }).fail(error => {
         // Tambahkan kode untuk menampilkan pemberitahuan jika gagal
-        alert("Failed to insert data.");
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Failed to insert data! Please try again.'
+        })
     });
 }
 
-
-
+function Delete(deleteId) {
+    Swal.fire({
+        title: 'Are you sure ?',
+        text: "You wan't to able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085D6',
+        cancelButtonColor: '#D33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "https://localhost:7010/api/employees?guid=" + deleteId, // Sesuaikan URL dengan endpoint API yang benar
+                type: "DELETE",
+            }).done(result => {
+                Swal.fire(
+                    'Deleted!',
+                    'Your data has been deleted',
+                    'succcess'
+                ).then(() => {
+                    location.reload();
+                });
+            }).fail(error => {
+                // Tampilkan alert pemberitahuan jika gagal
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Failed to delete data! Please try again.'
+                }) 
+            });
+        }
+    });
+}

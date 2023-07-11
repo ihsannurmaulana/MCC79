@@ -40,12 +40,17 @@ nav{
     color: #fff;
 }
 
+#tbodyEmployee > tr > td > div > button.btn{
+    font-size: 15px;
+    margin-left: 5px;
+}
 
-.btn {
+
+/*.btn {
     border-radius: 15px;
     width: 100px;
     margin-right: 10px;
-}
+}*/
 
 .dataTables_filter, dataTables_length {
     padding-bottom: 10px;
@@ -84,14 +89,14 @@ nav{
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-#myTableEmployee_wrapper > div.row.justfy-content-center > div.col-md-6.text-center.d-flex.justify-content-end > div > button.dt-button.buttons-collection.custom-html-collection {
-    border-radius: 10px;
-    font-family: 'Nunito', sans-serif;
-    color: black;
-    font-weight: bold;
-    background-color: white;
-    background: linear-gradient(to right, #FFECD2 0%, #FCB69F 51%, #FFECD2 100%);
-}
+    #myTableEmployee_wrapper > div.row.justfy-content-center > div.col-md-6.text-center.d-flex.justify-content-end > div > button.dt-button.buttons-collection.custom-html-collection {
+        border-radius: 10px;
+        font-family: 'Nunito', sans-serif;
+        color: black;
+        font-weight: bold;
+        background-color: white;
+        background: linear-gradient(to right, #FFECD2 0%, #FFECD2 50%, #FCB69F 100%);
+    }
 
 /*#myTableEmployee_wrapper div.dt-buttons button.dt-button.buttons-pdf {
     background-color: #FF0000;

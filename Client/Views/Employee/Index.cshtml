@@ -7,7 +7,7 @@
 }
 
 <h2 class="mb-3">Data Employee</h2>
-<button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#modalCreate" style="float: right">Create</button>
+<button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#modalCreate" style="float: right"><i class="fas fa-fw fa-plus"></i>Create</button>
 <table class="table table-striped table-hover" id="myTableEmployee">
     <thead class="table-primary">
         <tr>
@@ -22,10 +22,10 @@
             <th>Action</th>
         </tr>
     </thead>
-    <tbody id="tbodyPokemon"></tbody>
+    <tbody id="tbodyEmployee"></tbody>
 </table>
 
-<!-- Modal -->
+<!-- Modal Create -->
 <div class="modal fade" id="modalCreate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -75,13 +75,75 @@
                     <div class="mb-2">
                         <label for="phone" class="form-label">Phone Number</label>
                         <input type="tel" class="form-control" id="phoneNumber">
-                    </div>
-                    
+                    </div>                  
                 </form>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary" onclick="Insert()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Update -->
+<div class="modal fade" id="modalUpdate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Update Data</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-2">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="firstName" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-2">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="lastName">
+                    </div>
+                    <div class="mb-2">
+                        <label for="birthDate" class="form-label">Birth Date</label>
+                        <input type="date" class="form-control" id="birthDate">
+                    </div>
+                    <div class="mb-2">
+                        <label for="gender" class="form-label" id="gender">Gender</label>
+                        <div>
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label form-label" for="female">
+                                    <input class="form-check-input" type="radio" name="gender" value="Female" id="Female">
+                                    Female
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label form-label" for="male">
+                                    <input class="form-check-input" type="radio" name="gender" value="Male" id="Male">
+                                    Male
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label for="hiringDate" class="form-label">Hiring Date</label>
+                        <input type="date" class="form-control" id="hiringDate">
+                    </div>
+                    <div class="mb-2">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="user@example.com">
+                    </div>
+                    <div class="mb-2">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phoneNumber">
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" onclick="Insert()">Update</button>
             </div>
         </div>
     </div>
