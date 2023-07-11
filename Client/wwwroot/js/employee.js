@@ -7,9 +7,9 @@
             dataSrc: "data" //data source -> butuh array of object
         },
         dom: /*'Bfrtip',*/
-            "<'row justfy-content-center'<'col-md-2'<'d-flex justify-content-start'l>><'col-md-7 text-center d-flex justify-content-end'B><'col-md-3'f>>" +
+            "<'row justfy-content-center'<'col-md-2'<'d-flex justify-content-start'l>><'col-md-6 text-center d-flex justify-content-end'B><'col-md-4'f>>" +
             "<'row'<'col-md-12'tr>>" +
-            "<'row'<'col-md-5'i><'col-md-7'p>>",
+            "<'row'<'col-md-4'i><'col-md-8'p>>",
         
         buttons: [ 
             {
@@ -25,22 +25,28 @@
                 
             },
             {
-                extend: 'excelHtml5',
-                title: 'Excel',
-                text: 'Export to Excel',
-                //Columns to export
-                exportOptions: {
-                     columns: [0, 1, 2, 3,4,5]
-                }
-
-            },
-            {
-                extend: 'pdfHtml5',
-                title: 'PDF',
-                text: 'Export to PDF',
-                exportOptions: {
-                     columns: [0, 1, 2, 3, 4, 5]
-                }
+                extend: 'collection',
+                text: 'Export',
+                className: 'custom-html-collection',
+                buttons: [
+                    '<h4>Export</h4>',
+                    {
+                        extend: 'pdfHtml5',
+                        title: 'PDF',
+                        text: 'to PDF',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        title: 'Excel',
+                        text: 'to Excel',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                ]
             },
             {
                 extend: 'copy',
@@ -56,7 +62,12 @@
                 }
             },
             { data: "nik" },
-            { data: 'fullName', render: function (data, type, row) { return row.firstName + ' ' + row.lastName; } },
+            {
+                data: 'fullName',
+                render: function (data, type, row) {
+                    return row.firstName + ' ' + row.lastName;
+                }
+            },
             {
                 "data": function (row) {
                     return moment(row.birthdate).format("D MMMM YYYY");
@@ -87,6 +98,32 @@
         ]
     });
 });
+function Insert() {
+    var obj = {
+        firstName: $("#firstName").val(),
+        lastName: $("#lastName").val(),
+        birthDate: $("#birthDate").val(),
+        gender: $("input[name='gender']:checked").attr("id") === "Female" ? 0 : 1,
+        hiringDate: $("#hiringDate").val(),
+        email: $("#email").val(),
+        phoneNumber: $("#phoneNumber").val()
+    };
+
+    $.ajax({
+        url: "https://localhost:7010/api/employees", // Sesuaikan URL dengan endpoint API yang benar
+        type: "POST",
+        data: JSON.stringify(obj),
+        contentType: "application/json",
+        //dataType: "json"
+    }).done(result => {
+        // Tambahkan kode untuk menampilkan pemberitahuan jika berhasil
+        alert("Data inserted successfully!");
+        location.reload(); // Mereset form
+    }).fail( error => {
+        // Tambahkan kode untuk menampilkan pemberitahuan jika gagal
+        alert("Failed to insert data.");
+    });
+}
 
 
 

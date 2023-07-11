@@ -6,7 +6,8 @@
     Layout = "_LayoutDashboard";
 }
 
-<h2 class="mb-4">Data Employee</h2>
+<h2 class="mb-3">Data Employee</h2>
+<button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#modalCreate" style="float: right">Create</button>
 <table class="table table-striped table-hover" id="myTableEmployee">
     <thead class="table-primary">
         <tr>
@@ -25,72 +26,62 @@
 </table>
 
 <!-- Modal -->
-<div class="modal" tabindex="-1" id="modalPokemon">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade" id="modalCreate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalTitle"></h5>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Create Data</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" style="background-color: antiquewhite;">
-                <div class="row d-flex align-items-stretch">
-                    <div class="col-md-6 d-flex flex-column flex-grow-1">
-                        <div class="card mb-3 flex-grow-1" style="width: 350px; height: 400px; border-radius: 10px;">
-                            <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active flex-fill" id="profile-tab" data-bs-toggle="tab" data-bs-target="#tab-profile" type="button" role="tab" aria-controls="tab-home" aria-selected="true">Profile</button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link flex-fill" id="status-tab" data-bs-toggle="tab" data-bs-target="#tab-status" type="button" role="tab" aria-controls="tab-profile" aria-selected="false">Stats</button>
-                                </li>
-                            </ul>
-
-                            <!-- Profile -->
-                            <div class="tab-content" id="myTabContent" style="height: 350px ;">
-                                <div class="tab-pane fade show active" id="tab-profile" role="tabpanel" aria-labelledby="profile-tab">
-                                    <div class="card-body ">
-                                        <p class="card-text">Height : <span id="pokemonHeight"></span></p>
-                                        <p class="card-text">Weight : <span id="pokemonWeight"></span></p>
-                                        <p class="card-text mb-5">Base Experience : <span id="pokemonBaseExperience"></span></p>
-                                        <div class="row justify-content-center text-center">
-                                            <div class="col-8 mb-2" style="background-color: #d1cefc; border-radius: 10px;">
-                                                <span class="justify-content-center">Abilities</span>
-                                            </div>
-                                            <div id="pokemonAbilities" class="mr-2"></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Stats -->
-                                <div class="tab-pane fade justify-content-center" id="tab-status" role="tabpanel" aria-labelledby="status-tab">
-
-                                    <div class="row justify-content-center">
-                                        <div class="col-8 mb-4">
-                                            <div id="pokemonStats"></div>
-                                        </div>
-                                    </div>
-
-                                </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-2">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="firstName" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-2">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="lastName">
+                    </div>
+                    <div class="mb-2">
+                        <label for="birthDate" class="form-label">Birth Date</label>
+                        <input type="date" class="form-control" id="birthDate">
+                    </div>
+                    <div class="mb-2">
+                        <label for="gender" class="form-label" id="gender">Gender</label>
+                        <div>
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label form-label" for="female">
+                                    <input class="form-check-input" type="radio" name="gender" value="Female" id="Female">
+                                    Female
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label form-label" for="male">
+                                    <input class="form-check-input" type="radio" name="gender" value="Male" id="Male">
+                                    Male
+                                </label>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Image -->
-                    <div class="col-md-6 d-flex flex-column flex-grow-1">
-                        <div class="row justify-content-center">
-                            <div class="card align-items-center justify-content-center text-center mt-2 border-0" style="width: 300px; height: 350px; background-color: #cfccfe; border-radius: 10px; box-shadow: 4px 4px 5px rgba(0,0,0,0.3);">
-                                <img id="pokemonImage" src="" alt="Pokemon Image" class="modal-image" width="200" height="200">
-                                <span class="mt-4" style="background-color: #fff; border-radius: 10px; width: 200px;" id="pokemonName"></span>
-                                <div id="pokemonTypes" class="mr-2 mt-2"></div>
-                            </div>
-                        </div>
+                    <div class="mb-2">
+                        <label for="hiringDate" class="form-label">Hiring Date</label>
+                        <input type="date" class="form-control" id="hiringDate">
                     </div>
-                </div>
+                    <div class="mb-2">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="user@example.com">
+                    </div>
+                    <div class="mb-2">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phoneNumber">
+                    </div>
+                    
+                </form>
             </div>
-
-            <!-- Button Close -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" onclick="Insert()">Submit</button>
             </div>
         </div>
     </div>

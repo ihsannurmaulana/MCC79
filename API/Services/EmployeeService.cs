@@ -127,7 +127,6 @@ namespace API.Services
                 ModifiedDate = DateTime.Now
             };
             employee.Nik = GenerateNik.Nik(_employeeRepository.GetLastEmployeeNik());
-            _employeeRepository.Create(employee);
 
             var createdEmployee = _employeeRepository.Create(employee);
             if (createdEmployee is null)
@@ -137,15 +136,15 @@ namespace API.Services
 
             var toDto = new GetEmployeeDto
             {
-                Guid = employee.Guid,
-                Nik = employee.Nik,
-                BirthDate = employee.BirthDate,
-                Email = employee.Email,
-                FirstName = employee.FirstName,
-                LastName = employee.LastName,
-                Gender = employee.Gender,
-                HiringDate = employee.HiringDate,
-                PhoneNumber = employee.PhoneNumber
+                Guid = createdEmployee.Guid,
+                Nik = createdEmployee.Nik,
+                BirthDate = createdEmployee.BirthDate,
+                Email = createdEmployee.Email,
+                FirstName = createdEmployee.FirstName,
+                LastName = createdEmployee.LastName,
+                Gender = createdEmployee.Gender,
+                HiringDate = createdEmployee.HiringDate,
+                PhoneNumber = createdEmployee.PhoneNumber
             };
 
             return toDto; // employee created
@@ -171,7 +170,7 @@ namespace API.Services
                 HiringDate = updateEmployeeDto.HiringDate,
                 Email = updateEmployeeDto.Email,
                 BirthDate = updateEmployeeDto.BirthDate,
-                //Nik = updateEmployeeDto.Nik,
+                Nik = updateEmployeeDto.Nik,
                 ModifiedDate = DateTime.Now,
                 CreatedDate = getEmployee!.CreatedDate
             };

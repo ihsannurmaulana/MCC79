@@ -71,23 +71,37 @@ nav{
     font-weight: bold;
 }
 
-#myTableEmployee_wrapper div.dt-buttons button.dt-button.buttons-excel {
+/*#myTableEmployee_wrapper div.dt-buttons button.dt-button.buttons-excel {
     background-color: #3CB371;
     color: black;
     border-radius: 10px;
     font-family: 'Nunito', sans-serif;
     color: black;
     font-weight: bold;
+}*/
+
+#myTableEmployee_wrapper > div.row.justfy-content-center > div.col-md-6.text-center.d-flex.justify-content-end > div > button.dt-button {
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-#myTableEmployee_wrapper div.dt-buttons button.dt-button.buttons-pdf {
+#myTableEmployee_wrapper > div.row.justfy-content-center > div.col-md-6.text-center.d-flex.justify-content-end > div > button.dt-button.buttons-collection.custom-html-collection {
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    color: black;
+    font-weight: bold;
+    background-color: white;
+    background: linear-gradient(to right, #FFECD2 0%, #FCB69F 51%, #FFECD2 100%);
+}
+
+/*#myTableEmployee_wrapper div.dt-buttons button.dt-button.buttons-pdf {
     background-color: #FF0000;
     color: black;
     border-radius: 10px;
     font-family: 'Nunito', sans-serif;
     color: black;
     font-weight: bold;
-}
+}*/
+
 
 #myTableEmployee_wrapper div.dt-buttons button.dt-button.buttons-copy {
     color: black;
