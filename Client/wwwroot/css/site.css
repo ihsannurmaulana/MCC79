@@ -52,6 +52,14 @@ nav{
     margin-right: 10px;
 }*/
 
+#content > div > button {
+    font-family: 'Nunito', sans-serif;
+    background-color: #2dcf6b;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
 .dataTables_filter, dataTables_length {
     padding-bottom: 10px;
 }

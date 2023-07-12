@@ -94,7 +94,7 @@
                 render: function (data, type, row) {
                     return `
                     <div class="">
-                        <button onclick="#" data-bs-toggle="modal" data-bs-target="#modalUpdate" class="btn btn-primary text-center"><i class="fas fa-fw fa-edit"></i></button>
+                        <button onclick="UpdateGet('${row.guid}')" data-bs-toggle="modal" data-bs-target="#modalUpdate" class="btn btn-primary text-center"><i class="fas fa-fw fa-edit"></i></button>
                         <button onclick="Delete('${row.guid}')" data-bs-toggle="modal" data-bs-target="#" class="btn btn-danger text-center"><i class="fas fa-fw fa-trash"></i></button>
                     </div>`;
                 }
@@ -107,7 +107,7 @@ function Insert() {
         firstName: $("#firstName").val(),
         lastName: $("#lastName").val(),
         birthDate: $("#birthDate").val(),
-        gender: $("input[name='gender']:checked").attr("id") === "Female" ? 0 : 1,
+        gender: ($('#gender').val() === "Female") ? 0 : 1,
         hiringDate: $("#hiringDate").val(),
         email: $("#email").val(),
         phoneNumber: $("#phoneNumber").val()
@@ -139,6 +139,68 @@ function Insert() {
     });
 }
 
+ // Update
+function UpdateGet(data) {
+    $.ajax({
+        url: "https://localhost:7010/api/employees/" + data, // Sesuaikan URL dengan endpoint API yang benar
+        type: "GET",
+        dataType: "json",
+    }).done(res => {
+        $('#UGuid').val(res.data.guid);
+        $('#UNik').val(res.data.nik);
+        $('#UpdatefirstName').val(res.data.firstName);
+        $('#UpdatelastName').val(res.data.lastName);
+        $('#UpdatebirthDate').val(moment(res.data.birthDate).format('YYYY-MM-DD'));
+        $('#UpdateGender').val(res.data.gender === 0 ? "F" : "M");
+        $('#Updateemail').val(res.data.email);
+        $('#UpdatephoneNumber').val(res.data.phoneNumber);
+        $('#UpdatehiringDate').val(moment(res.data.hiringDate).format('YYYY-MM-DD'));
+    }).fail(error => {
+        alert("Inseert failed")
+    });
+}
+
+function UpdateEmployee() {
+    var obj = {
+        guid: $('#UGuid').val(),
+        nik: $('#UNik').val(),
+        firstName: $("#UpdatefirstName").val(),
+        lastName: $("#UpdatelastName").val(),
+        birthDate: $("#UpdatebirthDate").val(),
+        gender: ($('#Updategender').val() === "Female") ? 0 : 1,
+        hiringDate: $("#UpdatehiringDate").val(),
+        email: $("#Updateemail").val(),
+        phoneNumber: $("#UpdatephoneNumber").val()
+    };
+
+    $.ajax({
+        url: "https://localhost:7010/api/employees", // Sesuaikan URL dengan endpoint API yang benar
+        type: "PUT",
+        data: JSON.stringify(obj),
+        contentType: "application/json",
+        //dataType: "json"
+    }).done(result => {
+        // Tambahkan kode untuk menampilkan pemberitahuan jika berhasil
+        Swal.fire(
+            'Good job!',
+            'Data has been successfuly updated!',
+            'success'
+        ).then(() => {
+            location.reload(); // Mereset form
+        });
+
+    }).fail(error => {
+        // Tambahkan kode untuk menampilkan pemberitahuan jika gagal
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Failed to update data! Please try again.'
+        })
+    });
+}
+
+
+// Delete 
 function Delete(deleteId) {
     Swal.fire({
         title: 'Are you sure ?',
