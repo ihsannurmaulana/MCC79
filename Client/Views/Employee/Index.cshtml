@@ -7,7 +7,10 @@
 }
 
 <h2 class="mb-3">Data Employee</h2>
-<button type="button" class="btn mb-3" data-bs-toggle="modal" data-bs-target="#modalCreate" style="float: right"><i class="fas fa-fw fa-plus"></i>Create</button>
+<div style=" float: right">
+    <button type="button" class="btn mb-3" onclick="showChart()"><i class="fas fa-fw fa-chart-area"></i>Chart</button>
+    <button type="button" class="btn mb-3 mr-3" data-bs-toggle="modal" data-bs-target="#modalCreate" ><i class="fas fa-fw fa-plus"></i>Create</button>
+</div>
 <table class="table table-striped table-hover" id="myTableEmployee">
     <thead class="table-primary">
         <tr>
@@ -120,8 +123,8 @@
                         <div class="col-4">
                             <label for="gender" class="form-label">Gender</label>
                             <select class="form-select" id="UpdateGender">
-                                <option value="F">Female</option>
-                                <option value="M">Male</option>
+                                <option value="Female" name="Female" id="Female">Female</option>
+                                <option value="Male" name="Male" id="Male">Male</option>
                             </select>
                         </div>
                     </div>
@@ -135,6 +138,33 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary" onclick="UpdateEmployee()">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Chart -->
+<div class="modal fade" id="modalChart" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Chart</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-8 border-1 mx-auto">
+                            <canvas id="genderChart"></canvas>
+                        </div>
+                    <div/>
+                    <div class="row mt-2">
+                        <div class="col-8 border-1 mx-auto">
+                            <canvas id="universityChart"></canvas>
+                        </div>
+                    </div>            
+                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

@@ -21,7 +21,7 @@ public class EmployeeController : ControllerBase
 
     // GetAll data master Employee
     [HttpGet("get-all-master-employee")]
-    [Authorize(Roles = $"{nameof(RoleLevel.Manager)}")]
+    //[Authorize(Roles = $"{nameof(RoleLevel.Manager)}")]
     public IActionResult GetAllMaster()
     {
         var entities = _service.GetAllMaster();

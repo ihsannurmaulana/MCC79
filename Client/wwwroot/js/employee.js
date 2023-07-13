@@ -151,7 +151,7 @@ function UpdateGet(data) {
         $('#UpdatefirstName').val(res.data.firstName);
         $('#UpdatelastName').val(res.data.lastName);
         $('#UpdatebirthDate').val(moment(res.data.birthDate).format('YYYY-MM-DD'));
-        $('#UpdateGender').val(res.data.gender === 0 ? "F" : "M");
+        $('#UpdateGender').val(res.data.gender === 0 ? "Female" : "Male");
         $('#Updateemail').val(res.data.email);
         $('#UpdatephoneNumber').val(res.data.phoneNumber);
         $('#UpdatehiringDate').val(moment(res.data.hiringDate).format('YYYY-MM-DD'));
@@ -167,7 +167,7 @@ function UpdateEmployee() {
         firstName: $("#UpdatefirstName").val(),
         lastName: $("#UpdatelastName").val(),
         birthDate: $("#UpdatebirthDate").val(),
-        gender: ($('#Updategender').val() === "Female") ? 0 : 1,
+        gender: ($('#UpdateGender').val() === "Female") ? 0 : 1,
         hiringDate: $("#UpdatehiringDate").val(),
         email: $("#Updateemail").val(),
         phoneNumber: $("#UpdatephoneNumber").val()
@@ -198,7 +198,6 @@ function UpdateEmployee() {
         })
     });
 }
-
 
 // Delete 
 function Delete(deleteId) {
@@ -234,3 +233,105 @@ function Delete(deleteId) {
         }
     });
 }
+
+// Mengambil data employee dari API menggunakan metode GET
+function showChart() {
+    // Mendapatkan data dari API untuk kedua jenis chart
+    $.ajax({
+        url: "https://localhost:7010/api/employees/get-all-master-employee", // Sesuaikan URL sesuai dengan endpoint API Anda
+        type: "GET",
+        dataType: "json"
+    }).done(res => {
+        // Menghitung jumlah jenis kelamin
+        let femaleCount = 0;
+        let maleCount = 0;
+        for (let i = 0; i < res.data.length; i++) {
+            if (res.data[i].gender === 0) {
+                femaleCount++;
+            } else if (res.data[i].gender === 1) {
+                maleCount++;
+            }
+        }
+
+        // Menghitung total data
+        let totalCount = femaleCount + maleCount;
+
+        // Menghitung persentase jenis kelamin
+        let femalePercentage = (femaleCount / totalCount) * 100;
+        let malePercentage = (maleCount / totalCount) * 100;
+
+        // Membuat grafik jenis kelamin menggunakan Chart.js
+        let genderCtx = document.getElementById('genderChart').getContext('2d');
+        let genderChart = new Chart(genderCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Female', 'Male'],
+                datasets: [{
+                    data: [femalePercentage, malePercentage],
+                    backgroundColor: ['#FF6384', '#36A2EB'],
+                    hoverBackgroundColor: ['#FF6384', '#36A2EB']
+                }]
+            },
+            options: {
+                responsive: true,
+                tooltips: {
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            let label = data.labels[tooltipItem.index];
+                            let value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                            return label + ': ' + value.toFixed(2) + '% (' + Math.round(value * totalCount / 100) + ')';
+                        }
+                    }
+                }
+            }
+        });
+
+        // Menghitung jumlah universitas
+        let universities = {};
+        for (let i = 0; i < res.data.length; i++) {
+            const universityName = res.data[i].universityName;
+            if (universityName in universities) {
+                universities[universityName]++;
+            } else {
+                universities[universityName] = 1;
+            }
+        }
+
+        // Mengumpulkan data untuk grafik universitas
+        const universityNames = Object.keys(universities);
+        const universityCounts = Object.values(universities);
+
+        // Membuat grafik universitas menggunakan Chart.js
+        let universityCtx = document.getElementById('universityChart').getContext('2d');
+        let universityChart = new Chart(universityCtx, {
+            type: 'doughnut',
+            data: {
+                labels: universityNames,
+                datasets: [{
+                    data: universityCounts,
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#8d6e63', '#66bb6a', '#ba68c8'],
+                    hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#8d6e63', '#66bb6a', '#ba68c8']
+                }]
+            },
+            options: {
+                responsive: true,
+                tooltips: {
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            let label = data.labels[tooltipItem.index];
+                            let value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                            return label + ': ' + value;
+                        }
+                    }
+                }
+            }
+        });
+
+        // Membuka modal setelah grafik selesai dibuat
+        $('#modalChart').modal('show');
+    }).fail(error => {
+        alert("Failed to fetch data from API.");
+    });
+}
+
+
