@@ -1,6 +1,7 @@
 ﻿using API.Utilities.Enums;
 using Client.Contracts;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace Client.Repositories
@@ -10,15 +11,19 @@ namespace Client.Repositories
     {
         private readonly string request;
         private readonly HttpClient httpClient;
+        private readonly IHttpContextAccessor contextAccessor;
 
         public GeneralRepository(string request)
         {
             this.request = request;
+            contextAccessor = new HttpContextAccessor();
             httpClient = new HttpClient
+
             {
                 BaseAddress = new Uri("https://localhost:7010/api/")
             };
             this.request = request;
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", contextAccessor.HttpContext?.Session.GetString("JWToken"));
         }
 
         public async Task<ResponseHandler<IEnumerable<Entity>>> Get()
@@ -79,5 +84,7 @@ namespace Client.Repositories
             }
             return entityVM;
         }
+
+
     }
 }

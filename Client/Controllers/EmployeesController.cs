@@ -1,6 +1,8 @@
 ﻿using API.DTOs.Employees;
 using API.Models;
+using API.Utilities.Enums;
 using Client.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers
@@ -14,6 +16,7 @@ namespace Client.Controllers
             this.repository = repository;
         }
 
+        [Authorize(Roles = $"{nameof(RoleLevel.Admin)}")]
         public async Task<IActionResult> Index()
         {
             var result = await repository.Get();
@@ -39,7 +42,7 @@ namespace Client.Controllers
             var result = await repository.Post(newEmploye);
             if (result.Status == "200")
             {
-                TempData["showSuccessToast"] = "Data berhasil masuk";
+                TempData["Success"] = "Data berhasil masuk";
                 return RedirectToAction(nameof(Index));
             }
             else if (result.Status == "409")

@@ -79,14 +79,18 @@ function updateAlert() {
     });
 }
 
-function showSuccessToast(message) {
-    Swal.fire({
-        icon: 'success',
-        title: 'Success bro',
-        text: message,
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000
-    });
-}
+//document.addEventListener('DOMContentLoaded', function () {
+//    var successMessage = @TempData["Success"];
+
+//    if (successMessage) {
+//        Swal.fire({
+//            icon: 'success',
+//            title: 'Success',
+//            text: "Data berhasil dibuat",
+//            toast: true,
+//            position: 'top-end',
+//            showConfirmButton: false,
+//            timer: 3000
+//        });
+//    }
+//});
